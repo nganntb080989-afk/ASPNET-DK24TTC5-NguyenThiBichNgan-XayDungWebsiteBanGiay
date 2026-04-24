@@ -1,0 +1,70 @@
+﻿@model WebBanGiay.Models.Order
+@{
+    ViewBag.Title = "Chi tiết đơn hàng #" + Model.OrderId;
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white fw-bold">Sản phẩm đã đặt</div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sản phẩm</th>
+                            <th>Số lượng</th>
+                            <th>Đơn giá</th>
+                            <th>Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var d in Model.OrderDetails)
+                        {
+                            <tr>
+                                <td>
+                                    @d.ProductVariant.Product.ProductName <br />
+                                    <small class="text-muted">Size: @d.ProductVariant.Size | Màu: @d.ProductVariant.Color</small>
+                                </td>
+                                <td>@d.Quantity</td>
+                                <td>@d.UnitPrice.ToString("N0")</td>
+                                <td class="fw-bold">@((d.Quantity * d.UnitPrice).ToString("N0"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="text-end fs-5">
+                    Tổng cộng: <span class="text-danger fw-bold">@Model.TotalAmount.ToString("N0") ₫</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-white fw-bold">Thông tin giao hàng</div>
+            <div class="card-body">
+                <p><strong>Người nhận:</strong> @Model.CustomerName</p>
+                <p><strong>Điện thoại:</strong> @Model.CustomerPhone</p>
+                <p><strong>Địa chỉ:</strong> @Model.CustomerAddress</p>
+                <hr />
+                <p>
+                    <strong>Trạng thái hiện tại:</strong>
+                    <span class="badge bg-secondary">@Model.Status</span>
+                </p>
+
+                @using (Html.BeginForm("UpdateStatus", "Orders", FormMethod.Post))
+                {
+                    <input type="hidden" name="orderId" value="@Model.OrderId" />
+                    <label class="form-label fw-bold">Cập nhật trạng thái mới:</label>
+                    <select name="status" class="form-select mb-3">
+                        <option value="Chờ xử lý">Chờ xử lý</option>
+                        <option value="Đang giao">Đang giao</option>
+                        <option value="Hoàn thành">Hoàn thành</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary w-100">Cập nhật đơn hàng</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

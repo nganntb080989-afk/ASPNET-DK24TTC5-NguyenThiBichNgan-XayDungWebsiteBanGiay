@@ -1,0 +1,68 @@
+﻿@model WebBanGiay.Models.Product
+
+@{
+    ViewBag.Title = Model.ProductName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var mainImage = Model.ProductImages.FirstOrDefault(i => i.IsDefault)?.ImageUrl ?? "/Images/default-shoe.png";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="@mainImage" class="img-fluid rounded border mb-3 w-100" alt="@Model.ProductName" id="mainImageDisplay">
+
+            <div class="d-flex">
+                @foreach (var img in Model.ProductImages)
+                {
+                    <img src="@img.ImageUrl" class="img-thumbnail me-2" style="width: 80px; height: 80px; cursor: pointer;" onclick="document.getElementById('mainImageDisplay').src='@img.ImageUrl'" />
+                }
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">@Model.Category.CategoryName</li>
+                    <li class="breadcrumb-item">@Model.Brand.BrandName</li>
+                </ol>
+            </nav>
+
+            <h1 class="display-5">@Model.ProductName</h1>
+
+            <form action="/Cart/Add" method="post" class="mt-4">
+                <input type="hidden" name="productId" value="@Model.ProductId" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Chọn Size - Màu sắc:</label>
+                    <select name="variantId" class="form-select" required>
+                        <option value="">-- Vui lòng chọn --</option>
+                        @foreach (var variant in Model.ProductVariants)
+                        {
+                            var disabled = variant.StockQuantity <= 0 ? "disabled" : "";
+                            var status = variant.StockQuantity <= 0 ? "(Hết hàng)" : $"({variant.StockQuantity} sẵn có)";
+
+                            <option value="@variant.VariantId" @disabled>
+                                Size @variant.Size - Màu @variant.Color - @variant.Price.ToString("N0") VNĐ @status
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="mb-3 w-25">
+                    <label class="form-label fw-bold">Số lượng:</label>
+                    <input type="number" name="quantity" class="form-control" value="1" min="1" required />
+                </div>
+
+                <button type="submit" class="btn btn-dark btn-lg w-100 mt-3">
+                    THÊM VÀO GIỎ HÀNG
+                </button>
+            </form>
+
+            <div class="mt-5">
+                <h4>Mô tả sản phẩm</h4>
+                <p class="text-secondary">@Html.Raw(Model.Description)</p>
+            </div>
+        </div>
+    </div>
+</div>

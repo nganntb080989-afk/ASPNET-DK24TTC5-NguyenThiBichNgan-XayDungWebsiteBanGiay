@@ -1,0 +1,34 @@
+﻿@model IEnumerable<WebBanGiay.Models.Product>
+
+@{
+    ViewBag.Title = "Danh mục giày";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center my-4">Sản Phẩm Mới Nhất</h2>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        // Lấy ảnh bìa (nếu không có thì để ảnh mặc định)
+        var coverImage = item.ProductImages.FirstOrDefault(i => i.IsDefault)?.ImageUrl ?? "/Images/default-shoe.png";
+
+        // Lấy giá thấp nhất trong các size
+        var minPrice = item.ProductVariants.Any() ? item.ProductVariants.Min(v => v.Price) : 0;
+
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="@coverImage" class="card-img-top" alt="@item.ProductName" style="height:250px; object-fit:cover;">
+                <div class="card-body">
+                    <h6 class="text-muted">@item.Brand.BrandName</h6>
+                    <h5 class="card-title">@item.ProductName</h5>
+                    <p class="card-text text-danger fw-bold">Từ @minPrice.ToString("N0") VNĐ</p>
+
+                    <a href="@Url.Action("Details", "Products", new { id = item.ProductId })" class="btn btn-outline-primary w-100">
+                        Xem chi tiết
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,69 @@
+﻿@model List<WebBanGiay.Models.CartItem>
+
+@{
+    ViewBag.Title = "Thanh toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4">Thông tin thanh toán</h2>
+
+    <div class="row">
+        <div class="col-md-7 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="card-title border-bottom pb-2 mb-4">Địa chỉ giao hàng</h5>
+
+                    @using (Html.BeginForm("ProcessOrder", "Checkout", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Họ và tên người nhận</label>
+                            <input type="text" name="CustomerName" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Số điện thoại</label>
+                            <input type="tel" name="CustomerPhone" class="form-control" required />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Địa chỉ nhận hàng (Số nhà, đường, phường/xã, quận/huyện)</label>
+                            <textarea name="CustomerAddress" class="form-control" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
+                            ĐẶT HÀNG NGAY
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-sm bg-light">
+                <div class="card-body p-4">
+                    <h5 class="card-title border-bottom pb-2 mb-4">Tóm tắt đơn hàng</h5>
+
+                    <ul class="list-group list-group-flush mb-3">
+                        @foreach (var item in Model)
+                        {
+                            <li class="list-group-item bg-light px-0 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="my-0">@item.ProductName</h6>
+                                    <small class="text-muted">Size: @item.Size | SL: @item.Quantity</small>
+                                </div>
+                                <span class="text-muted">@item.TotalPrice.ToString("N0") ₫</span>
+                            </li>
+                        }
+                    </ul>
+
+                    <div class="d-flex justify-content-between border-top pt-3">
+                        <strong class="fs-5">Tổng cộng:</strong>
+                        <strong class="fs-4 text-danger">@Model.Sum(x => x.TotalPrice).ToString("N0") ₫</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

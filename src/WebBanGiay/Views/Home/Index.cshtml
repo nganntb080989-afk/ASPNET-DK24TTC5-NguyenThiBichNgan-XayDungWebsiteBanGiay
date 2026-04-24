@@ -1,0 +1,74 @@
+﻿@model IEnumerable<WebBanGiay.Models.Product>
+
+@{
+    ViewBag.Title = "Trang Chủ - Giày Thể Thao";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="p-5 mb-5 rounded-3 shadow-sm position-relative overflow-hidden"
+     style="background: url('https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat; min-height: 450px;">
+
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(0,0,0,0.5);"></div>
+
+    <div class="container py-5 position-relative z-index-1 text-white text-center mt-4">
+        <h1 class="display-4 fw-bold mb-3">BƯỚC ĐI PHONG CÁCH</h1>
+        <p class="col-md-8 mx-auto fs-5 mb-4">Khám phá bộ sưu tập giày thể thao mới nhất. Chất lượng vượt trội, thiết kế thời thượng, nâng tầm phong cách của bạn mỗi ngày.</p>
+        <a href="/Products" class="btn btn-warning btn-lg fw-bold px-4 rounded-pill">
+            MUA SẮM NGAY <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
+
+<div class="container mb-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-uppercase">Sản Phẩm Mới Nhất</h2>
+        <div style="width: 60px; height: 3px; background-color: #ffc107; margin: 0 auto;"></div>
+    </div>
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            // Logic lấy ảnh bìa và giá rẻ nhất
+            var coverImage = item.ProductImages.FirstOrDefault(i => i.IsDefault)?.ImageUrl ?? "/Images/default-shoe.png";
+            var minPrice = item.ProductVariants.Any() ? item.ProductVariants.Min(v => v.Price) : 0;
+
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm border-0 product-card transition-all" style="transition: transform 0.3s ease;">
+
+                    <a href="@Url.Action("Details", "Products", new { id = item.ProductId })" class="text-decoration-none">
+                        <img src="@coverImage" class="card-img-top" alt="@item.ProductName" style="height: 250px; object-fit: cover;">
+                    </a>
+
+                    <div class="card-body text-center d-flex flex-column">
+                        <span class="badge bg-dark mb-2 align-self-center">@item.Brand.BrandName</span>
+                        <h5 class="card-title text-truncate" title="@item.ProductName">
+                            <a href="@Url.Action("Details", "Products", new { id = item.ProductId })" class="text-dark text-decoration-none">
+                                @item.ProductName
+                            </a>
+                        </h5>
+                        <p class="card-text text-danger fw-bold fs-5 mt-auto">@minPrice.ToString("N0") ₫</p>
+
+                        <a href="@Url.Action("Details", "Products", new { id = item.ProductId })" class="btn btn-outline-dark w-100 mt-3">
+                            <i class="bi bi-eye"></i> Xem Chi Tiết
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/Products" class="btn btn-dark px-5 py-2 rounded-pill">
+            Xem Tất Cả Sản Phẩm
+        </a>
+    </div>
+</div>
+
+@section scripts {
+    <style>
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+    </style>
+}

@@ -1,0 +1,83 @@
+﻿@model List<WebBanGiay.Models.CartItem>
+
+@{
+    ViewBag.Title = "Giỏ Hàng Của Bạn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5 mb-5">
+    <h2 class="mb-4 text-uppercase fw-bold"><i class="bi bi-cart3"></i> Giỏ Hàng</h2>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info text-center py-5">
+            <h4>Giỏ hàng của bạn đang trống!</h4>
+            <p>Hãy quay lại cửa hàng và chọn cho mình một đôi giày thật phong cách nhé.</p>
+            <a href="/Products" class="btn btn-primary mt-3">Tiếp tục mua sắm</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Thông tin</th>
+                                <th>Đơn giá</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                                <th>Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td style="width: 120px;">
+                                        <img src="@item.ImageUrl" alt="@item.ProductName" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;">
+                                    </td>
+                                    <td class="text-start">
+                                        <strong>@item.ProductName</strong><br />
+                                        <small class="text-muted">Size: @item.Size | Màu: @item.Color</small>
+                                    </td>
+                                    <td>@item.Price.ToString("N0") ₫</td>
+                                    <td>@item.Quantity</td>
+                                    <td class="text-danger fw-bold">@item.TotalPrice.ToString("N0") ₫</td>
+                                    <td>
+                                        <a href="/Cart/Remove?variantId=@item.VariantId" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                                            <i class="bi bi-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <a href="/Products" class="btn btn-outline-dark"><i class="bi bi-arrow-left"></i> Tiếp tục mua sắm</a>
+            </div>
+
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="card shadow-sm border-0 bg-light">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-4">Tóm tắt đơn hàng</h4>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Tổng số lượng:</span>
+                            <strong>@Model.Sum(x => x.Quantity) sản phẩm</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-4 border-bottom pb-3">
+                            <span class="fs-5">Tổng tiền:</span>
+                            <strong class="fs-4 text-danger">@Model.Sum(x => x.TotalPrice).ToString("N0") ₫</strong>
+                        </div>
+
+                        <a href="/Checkout" class="btn btn-success btn-lg w-100 fw-bold">
+                            TIẾN HÀNH THANH TOÁN
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

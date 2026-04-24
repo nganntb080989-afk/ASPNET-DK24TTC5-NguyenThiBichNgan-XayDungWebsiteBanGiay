@@ -1,0 +1,18 @@
+# 08/04/2026
+Nội dung công việc: Hoàn thiện hệ thống (Giao diện, Chức năng, Cơ sở dữ liệu).
+Về Cơ sở dữ liệu:
+Hoàn thiện sơ đồ quan hệ thực thể (Database Diagram) bao gồm các bảng cốt lõi: Category&Brand, Product, ProductVariant, ProductImage, Order, OrderDetail, AdminUser
+Về Giao diện (UI/UX):
+Thiết kế giao diện dễ sử dụng, để người dung có thể xem sản phẩm lựa chọn size giày phù hợp.
+Xây dựng các trang chính: Trang chủ hiện thị banner và hình ảnh các mẫu giày mới nhất.
+Các sản phẩm khác, xem giỏ hàng, đăng nhập quyền quản trị.
+Đăng nhập quyền quản trị: thêm sản phẩm, xử lý đơn hàng.
+Chạy thử website test các chức năng.
+# 23/04/2026
+Nội dung công việc: Tổng hợp và Cập nhật hồ sơ đồ án
+Cập nhật file báo cáo Word:
+Hệ thống hóa lại toàn bộ lý thuyết về kiến trúc ASP.NET MVC, công nghệ Entity Framework và hệ quản trị SQL Server.
+Viết chi tiết chương "Hiện thực hóa nghiên cứu", mô tả bài toán và vẽ lược đồ Use Case.
+Chụp ảnh màn hình các kết quả đạt được (Trang chủ, giỏ hàng, đặt hàng, các chức năng quyền quản trị) và đưa vào báo cáo để minh chứng cho sản phẩm.
+Đánh giá các mặt đạt được và thẳng thắn nhìn nhận những hạn chế.
+Đề xuất hướng phát triển trong tương lai.
